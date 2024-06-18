@@ -1,0 +1,25 @@
+.card {
+    background-color: #34495e;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    color: #ecf0f1;
+}
+
+.slider img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.category {
+    color: #bdc3c7;
+}
+
+.instagramLink {
+    color: #ecf0f1;
+    text-decoration: none;
+}
+
+.instagramLink i {
+    font-size: 20px;
+}
