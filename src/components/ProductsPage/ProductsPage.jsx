@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../services/firebase';
+import React, { useState, useEffect, useCallback } from 'react';
 import Filters from '../Filters/Filters';
 import ProductList from '../ProductList/ProductList';
+import { getProducts } from '../../services/productService';
 import styles from './ProductsPage.module.css';
 
 const ProductsPage = () => {
@@ -11,52 +10,47 @@ const ProductsPage = () => {
   const [filters, setFilters] = useState({
     priceRange: [0, 10000],
     category: 'загальний',
-    searchTerm: ''
+    searchTerm: '',
+    artSearch: ''
   });
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const querySnapshot = await getDocs(collection(db, 'products'));
-      const productList = querySnapshot.docs.map(doc => doc.data());
-      console.log("Fetched products:", productList);  // Debugging line
-      setProducts(productList);
-      setFilteredProducts(productList);
+      const products = await getProducts();
+      setProducts(products);
     };
-
     fetchProducts();
   }, []);
 
   const filterProducts = useCallback(() => {
     const filtered = products.filter(product => {
       const price = product.kg * product.pricePerKg + product.selfCost + product.plusCost;
-      console.log("price" + price);
       const matchesPrice = price >= filters.priceRange[0] && price <= filters.priceRange[1];
       const matchesCategory = filters.category === 'загальний' || product.category === filters.category;
       const matchesSearchTerm = product.name.toLowerCase().includes(filters.searchTerm.toLowerCase());
+      const matchesArtSearch = product.art.toString().includes(filters.artSearch);
 
-      return matchesPrice && matchesCategory && matchesSearchTerm;
+      return matchesPrice && matchesCategory && matchesSearchTerm && matchesArtSearch;
     });
 
-    console.log("Filtered products:", filtered);  // Debugging line
     setFilteredProducts(filtered);
   }, [filters, products]);
 
   useEffect(() => {
     filterProducts();
-  }, [filters, products, filterProducts]);
+  }, [filters, filterProducts]);
 
   const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      ...newFilters
+    }));
   };
 
   return (
     <div className={styles.productsPage}>
       <Filters onFilterChange={handleFilterChange} />
-      {filteredProducts.length > 0 ? (
-        <ProductList products={filteredProducts} />
-      ) : (
-        <p>No products found</p>
-      )}
+      <ProductList products={filteredProducts} />
     </div>
   );
 };

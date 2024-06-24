@@ -5,22 +5,39 @@ const Filters = ({ onFilterChange }) => {
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [category, setCategory] = useState('загальний');
   const [searchTerm, setSearchTerm] = useState('');
+  const [artSearch, setArtSearch] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const categories = [
+    'загальний',
+    'дитячі товари',
+    'аксесуари',
+    'жіночий одяг',
+    'чоловічий одяг',
+    'інше'
+  ];
 
   const handlePriceChange = (e, index) => {
     const newRange = [...priceRange];
     newRange[index] = parseInt(e.target.value, 10);
     setPriceRange(newRange);
-    onFilterChange({ priceRange: newRange, category, searchTerm });
+    onFilterChange({ priceRange: newRange, category, searchTerm, artSearch });
   };
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-    onFilterChange({ priceRange, category: e.target.value, searchTerm });
+  const handleCategoryChange = (category) => {
+    setCategory(category);
+    onFilterChange({ priceRange, category, searchTerm, artSearch });
+    setShowDropdown(false);
   };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    onFilterChange({ priceRange, category, searchTerm: e.target.value });
+    onFilterChange({ priceRange, category, searchTerm: e.target.value, artSearch });
+  };
+
+  const handleArtSearchChange = (e) => {
+    setArtSearch(e.target.value);
+    onFilterChange({ priceRange, category, searchTerm, artSearch: e.target.value });
   };
 
   return (
@@ -49,14 +66,22 @@ const Filters = ({ onFilterChange }) => {
       </div>
       <div className={styles.filterItem}>
         <label>Категорія: </label>
-        <select value={category} onChange={handleCategoryChange} className={styles.select}>
-          <option value="загальний">Загальний</option>
-          <option value="дитячі товари">Дитячі товари</option>
-          <option value="аксесуари">Аксесуари</option>
-          <option value="жіночий одяг">Жіночий одяг</option>
-          <option value="чоловічий одяг">Чоловічий одяг</option>
-          <option value="інше">Інше</option>
-        </select>
+        <div className={styles.dropdown} onClick={() => setShowDropdown(!showDropdown)}>
+          <div className={styles.dropdownSelected}>{category}</div>
+          {showDropdown && (
+            <div className={styles.dropdownMenu}>
+              {categories.map((cat) => (
+                <div
+                  key={cat}
+                  className={styles.dropdownItem}
+                  onClick={() => handleCategoryChange(cat)}
+                >
+                  {cat}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
       <div className={styles.filterItem}>
         <label>Пошук: </label>
@@ -64,6 +89,17 @@ const Filters = ({ onFilterChange }) => {
           type="text"
           value={searchTerm}
           onChange={handleSearchChange}
+          placeholder="Пошук за назвою"
+          className={styles.searchInput}
+        />
+      </div>
+      <div className={styles.filterItem}>
+        <label>Пошук по артикулу: </label>
+        <input
+          type="text"
+          value={artSearch}
+          onChange={handleArtSearchChange}
+          placeholder="Пошук за артикулом"
           className={styles.searchInput}
         />
       </div>

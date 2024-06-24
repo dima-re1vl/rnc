@@ -5,11 +5,13 @@ import ProductsPage from './components/ProductsPage/ProductsPage';
 import InfoPage from './components/InfoPage/InfoPage';
 import Header from './components/Header/Header';
 import styles from './App.module.css';
+import TopBar from './components/TopBar/TopBar';
 
 function App() {
   return (
     <Router>
       <div className={styles.app}>
+        <TopBar />
         <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />
