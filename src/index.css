@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.slick-next {
+  right: 0px !important;
+  z-index: 1;
+}
+
+.slick-prev {
+  left: 0px !important;
+  z-index: 1;
+}
+
+.slick-dots li.slick-active button:before {
+  color: white !important;
+}
+
+.slick-dots li button:before {
+  color: #2f60b4 !important;
+  opacity: 0.7 !important;
+}
