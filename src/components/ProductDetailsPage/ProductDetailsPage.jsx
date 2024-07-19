@@ -5,6 +5,7 @@ import styles from './ProductDetailsPage.module.css';
 import { getProducts } from '../../services/productService';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import calculatePrice from '../../utils/calculatePrice';
 
 const ProductDetailsPage = () => {
   const { art } = useParams();
@@ -46,6 +47,8 @@ const ProductDetailsPage = () => {
     slidesToScroll: 1
   };
 
+  const price = calculatePrice(product);
+
   return (
     <div className={styles.productDetails}>
       <div className={styles.imageSliderContainer}>
@@ -62,6 +65,7 @@ const ProductDetailsPage = () => {
         <p className={styles.art}><strong>Art:</strong> {product.art}</p>
         <p className={styles.category}><strong>Категорія:</strong> {product.category}</p>
         <p className={styles.info}><strong>Інформація:</strong> {product.info}</p>
+        <p className={styles.price}><strong>Ціна:</strong> {price} грн</p>
         <p className={styles.sizes}><strong>Розміри:</strong> {product.sizes.join(', ')}</p>
         <a href={product.inst} target="_blank" rel="noopener noreferrer" className={styles.instagramLink}>
           <img src="https://png.pngtree.com/png-vector/20221018/ourmid/pngtree-instagram-social-platform-icon-png-image_6315976.png" alt="Instagram" className={styles.instagramIcon} />
