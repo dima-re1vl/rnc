@@ -1,8 +1,0 @@
-.productsPage {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    background-color: #16213e;
-    color: #ecf0f1;
-}
