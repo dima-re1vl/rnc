@@ -1,16 +1,59 @@
 .header {
     background-color: #2c3e50;
     padding: 10px 0;
+    position: relative;
 }
 
 .navList {
     list-style: none;
     display: flex;
     justify-content: space-around;
+    width: 100%;
 }
 
 .navList li a {
     color: #ecf0f1;
     text-decoration: none;
     font-weight: bold;
+}
+
+/* Бургер-меню */
+.burgerMenu {
+    display: none;
+    font-size: 24px;
+    color: #ecf0f1;
+    cursor: pointer;
+}
+
+/* Навигационное меню */
+.nav {
+    display: flex;
+}
+
+.navOpen {
+    display: block;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+    .navList {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        padding: 0px;
+    }
+
+    .navOpen .navList {
+        display: flex;
+    }
+
+    .burgerMenu {
+        display: block;
+        margin-left: 15px;
+    }
+
+    .navList li {
+        padding: 10px;
+        text-align: center;
+    }
 }
